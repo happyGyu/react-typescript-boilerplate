@@ -3,7 +3,8 @@ module.exports = {
   extends: [
     'airbnb',
     'airbnb/hooks',
-    'airbnb/typescript',
+    'airbnb-typescript',
+    'prettier',
     'plugin:@typescript-eslint/recommended',
   ],
   parserOptions: {
@@ -22,7 +23,6 @@ module.exports = {
       },
     ],
   },
-
   settings: {
     'import/resolver': {
       node: {
@@ -32,7 +32,7 @@ module.exports = {
       typescript: {},
     },
     react: {
-      version: 'detect', // Tells eslint-plugin-react to automatically detect the version of React to use
+      version: 'detect',
     },
   },
 };

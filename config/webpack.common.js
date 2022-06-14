@@ -1,10 +1,28 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const Dotenv = require('dotenv-webpack');
+const dotenv = require('dotenv');
+const InterpolateHtmlPlugin = require('interpolate-html-plugin');
 
+dotenv.config();
+
+const getPublicUrl = () => {
+  const envPublicUrl = process.env.PUBLIC_URL;
+  if (envPublicUrl) {
+    return envPublicUrl.endsWith('/') ? envPublicUrl : `${envPublicUrl}/`;
+  }
+  const { homepage } = require('../package.json');
+  if (homepage) {
+    return homepage.endsWith('/') ? homepage : `${homepage}/`;
+  }
+  return '/';
+};
+
+const env = { ...process.env, PUBLIC_URL: getPublicUrl() };
 module.exports = {
-  entry: `${path.resolve(__dirname, '../src')}/index.tsx`,
+  entry: {
+    app: `${path.join(__dirname, '../src', 'index.tsx')}`,
+  },
   module: {
     rules: [
       {
@@ -22,8 +40,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: `${path.resolve(__dirname, '../public')}/index.html`,
     }),
-    new webpack.ProvidePlugin({}),
-    new Dotenv(),
+    new InterpolateHtmlPlugin(env),
   ],
   resolve: {
     modules: [path.resolve(__dirname, '../src'), 'node_modules'],
@@ -35,7 +52,6 @@ module.exports = {
   output: {
     filename: '[name].[contenthash].js',
     path: path.resolve(__dirname, '../dist'),
-    publicPath: './',
-    clean: true,
+    publicPath: '/',
   },
 };
