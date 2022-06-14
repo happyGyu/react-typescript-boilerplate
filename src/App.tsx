@@ -1,5 +1,9 @@
-import test from './test';
+import Test from './components/Test';
 
 export default function App() {
-  return <div>hi</div>;
+  return (
+    <div>
+      <Test />
+    </div>
+  );
 }
